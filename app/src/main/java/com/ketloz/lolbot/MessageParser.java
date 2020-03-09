@@ -37,6 +37,11 @@ public class MessageParser {
     }
 
     public boolean isValidMessage(String message) {
-        return message.startsWith(("!"));
+        MessageParser.LOGGER.log(Level.INFO, "Checking if message is valid");
+
+        final boolean messageIsValid = message.startsWith("!");
+        MessageParser.LOGGER.log(Level.INFO, "Message is valid: " + messageIsValid);
+
+        return messageIsValid;
     }
 }
