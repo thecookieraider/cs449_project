@@ -9,6 +9,21 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class MessageParser {
+    public class CommandBundle {
+        public String command;
+        public List<String> commandArguments;
+
+        public CommandBundle(String command, String[] arguments) {
+            this.command = command;
+            this.commandArguments = Arrays.asList(arguments);
+        }
+
+        public CommandBundle(String command, List<String> arguments) {
+            this.command = command;
+            this.commandArguments = arguments;
+        }
+    }
+
     private final static String LOGGER_NAME = "MessageParser";
     private final static Logger LOGGER = Logger.getLogger(MessageParser.LOGGER_NAME);
     private void exec(String command, List<String> args) {
@@ -23,17 +38,19 @@ public class MessageParser {
         MessageParser.LOGGER.exiting("MessageParser", methodName);
     }
 
-    public void parseMessage(String message) {
+    public CommandBundle parseMessage(String message) {
         MessageParser.logMethodEntry("parseMessage");
+        CommandBundle returnValue = null;
 
         if (message.startsWith("!")) {
             final String[] cmdAndArgs = message.split(" ");
             final String command = cmdAndArgs[0];
             final List<String> args = Arrays.asList(cmdAndArgs).subList(1, cmdAndArgs.length);
-            this.exec(command, args);
+            returnValue = new CommandBundle(command, args);
         }
 
         MessageParser.logMethodExit("parseMessage");
+        return returnValue;
     }
 
     public boolean isValidMessage(String message) {
