@@ -17,4 +17,8 @@ public class MessageParser {
             this.exec(command, args);
         }
     }
+
+    public boolean isValidMessage(String message) {
+        return message.startsWith(("!"));
+    }
 }
