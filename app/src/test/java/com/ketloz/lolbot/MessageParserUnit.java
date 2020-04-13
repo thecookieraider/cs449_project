@@ -4,7 +4,7 @@ import org.junit.Test;
 
 public class MessageParserUnit {
     @Test
-    public void addition_isCorrect() {
+    public void canParseCommandsCorrectly() {
         MessageParser parser = new MessageParser();
 
         final String invalidMessage = "im not valid";
@@ -14,9 +14,9 @@ public class MessageParserUnit {
         assertFalse(parser.isValidMessage((invalidMessage)));
         assertTrue(parser.isValidMessage((validMessage)));
 
-        final MessageParser.CommandBundle parseResult = parser.parseMessage(validCmdWithArgs);
+        final CommandBundle parseResult = parser.parseMessage(validCmdWithArgs);
 
-        assertEquals("cmd", parseResult.command);
-        assertArrayEquals(new String[] { "args", "args", "args" }, parseResult.commandArguments.toArray());
+        assertEquals("cmd", parseResult.getCommand());
+        assertArrayEquals(new String[] { "args", "args", "args" }, parseResult.getCommandArguments().toArray());
     }
 }
