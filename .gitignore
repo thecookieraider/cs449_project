@@ -2,3 +2,4 @@
 .gradle/
 ~*.doc
 local.properties
+r4j/

@@ -8,9 +8,6 @@ import java.util.logging.Logger;
 public class MessageParser {
     private final static String LOGGER_NAME = "MessageParser";
     private final static Logger LOGGER = Logger.getLogger(MessageParser.LOGGER_NAME);
-    private void exec(String command, List<String> args) {
-
-    }
 
     private static void logMethodEntry(String methodName) {
         MessageParser.LOGGER.entering("MessageParser", methodName);
