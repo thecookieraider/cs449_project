@@ -1,1 +1,4 @@
-NUL 
+.idea/
+.gradle/
+~*.doc
+local.properties
