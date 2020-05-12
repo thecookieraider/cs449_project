@@ -7,6 +7,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentTransaction;
 import android.widget.Toast;
 
 import java.io.Console;
@@ -68,14 +69,31 @@ public class ApiManager {
                 ApiRequestTask apiTask = (ApiRequestTask) inputMessage.obj;
 
                 MainActivity localView = apiTask.getView();
-                Context context = localView.getApplicationContext();
+                Context context = localView == null ? null : localView.getApplicationContext();
                 switch (inputMessage.what) {
                     case DOWNLOAD_STARTED:
                         break;
                     case DOWNLOAD_COMPLETE:
+                        if (localView != null) {
+                            MatchListFragment matchList = MatchListFragment.newInstance();
+
+                            FragmentTransaction ft = localView.getSupportFragmentManager().beginTransaction();
+                            ft.replace(R.id.match_list_container, matchList);
+                            ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+                            ft.commit();
+
+                            SummonerInfoFragment info = SummonerInfoFragment.newInstance();
+
+                            FragmentTransaction ft2 = localView.getSupportFragmentManager().beginTransaction();
+                            ft2.replace(R.id.profile_container, info);
+                            ft2.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+                            ft2.commit();
+                        }
+
                         recycleTask(apiTask);
                         break;
                     case DOWNLOAD_FAILED:
+                        Toast.makeText(context, "Summoner not found", Toast.LENGTH_LONG).show();
                         recycleTask(apiTask);
                         break;
                     default:

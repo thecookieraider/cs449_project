@@ -37,6 +37,8 @@ public class ApiRequestRunnable<T> implements Runnable {
 
             result = this.operation.perform(task.getViewModel());
 
+            if (result == null) throw new Exception("Issue with operation");
+
             task.handleDownloadState(HTTP_STATE_COMPLETED);
 
         } catch (Throwable e) {
@@ -52,7 +54,6 @@ public class ApiRequestRunnable<T> implements Runnable {
 
             if (Thread.interrupted()) {
                 return;
-
             }
             /*
              * Tries to pause the thread for 250 milliseconds,

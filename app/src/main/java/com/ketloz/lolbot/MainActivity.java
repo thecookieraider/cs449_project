@@ -7,8 +7,11 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -30,7 +33,7 @@ import no.stelar7.api.r4j.pojo.lol.match.Match;
 import no.stelar7.api.r4j.pojo.lol.match.MatchReference;
 import no.stelar7.api.r4j.pojo.lol.summoner.Summoner;
 
- public class MainActivity extends AppCompatActivity implements RegionDialog.RegionDialogListener {
+ public class MainActivity extends AppCompatActivity implements RegionDialog.RegionDialogListener, MatchListFragment.OnListFragmentInteractionListener, SummonerInfoFragment.OnFragmentInteractionListener {
     private ApiRequestTask apiThread;
     private MainActivityViewModel model;
     private APICredentials creds;
@@ -46,6 +49,9 @@ import no.stelar7.api.r4j.pojo.lol.summoner.Summoner;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
+
         setContentView(R.layout.activity_main);
 
         creds = new APICredentials(getResources().getString(R.string.riot_api_key));
@@ -91,7 +97,7 @@ import no.stelar7.api.r4j.pojo.lol.summoner.Summoner;
              System.out.println("Summoner retrieved");
 
              System.out.println("Retrieving match references...");
-             List<MatchReference> matchRefs = model.api.getLoLAPI().getMatchAPI().getMatchList(model.platform, summoner.getAccountId(), 0, 5);
+             List<MatchReference> matchRefs = model.api.getLoLAPI().getMatchAPI().getMatchList(model.platform, summoner.getAccountId(), 0, 1);
              System.out.println("Match references retrieved");
 
              System.out.println("Converting match references into full matches");
@@ -104,8 +110,9 @@ import no.stelar7.api.r4j.pojo.lol.summoner.Summoner;
 
              System.out.println("Done converting");
              model.matches = matches;
-
+             model.apiSummoner = summoner;
              System.out.println("Matches:" + matches);
+
              return matches;
          } catch (Exception e) {
              System.out.println(e.getMessage());
@@ -129,4 +136,14 @@ import no.stelar7.api.r4j.pojo.lol.summoner.Summoner;
         ApiManager.cancelAll();
         super.onStop();
     }
+
+     @Override
+     public void onListFragmentInteraction(Match item) {
+
+     }
+
+     @Override
+     public void onFragmentInteraction(Uri uri) {
+
+     }
  }
